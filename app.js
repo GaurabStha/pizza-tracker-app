@@ -8,8 +8,11 @@ const PORT = process.env.port || 3300;
 const app = express();
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('home');
 });
+
+// Set for the static file
+app.use(express.static('public'));
 
 // view engine setup
 app.set('view engine', 'hbs');
