@@ -7,10 +7,6 @@ const PORT = process.env.port || 3300;
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.render('home');
-});
-
 // Set for the static file
 app.use(express.static('public'));
 
@@ -22,6 +18,19 @@ app.engine('hbs', exhbs({
     layoutsDir: __dirname + '/views/layouts',
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 }));
+
+app.get('/', (req, res) => {
+    res.render('home');
+});
+app.get('/cart', (req, res) => {
+    res.render('customer/cart');
+});
+app.get('/login', (req, res) => {
+    res.render('auth/login');
+});
+app.get('/register', (req, res) => {
+    res.render('auth/register');
+});
 
 app.listen(PORT, () => {
     console.log(`The server is running at ${PORT}.`);
