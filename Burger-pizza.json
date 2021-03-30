@@ -1,0 +1,23 @@
+[
+{
+ "name": "BURGER PIZZA- CLASSIC VEG",
+ "image": "Burger_Pizza.jpg",
+ "description": "Bite into delight! Witness the epic combination of pizza and burger with our classic Burger Pizza, that looks good and tastes great!",
+ "price": "Rs. 300",
+ "size": "small"
+ },
+ {
+ "name": "BURGER PIZZA- PREMIUM VEG",
+ "image": "Burger_Pizza.jpg",
+ "description": "The good just got better! Treat yourself to the premium taste of the Burger Pizza, that looks good and tastes great with paneer and red paprika.",
+ "price": "Rs. 300",
+ "size": "small"
+ },
+ {
+ "name": "BURGER PIZZA- CLASSIC NON VEG",
+ "image": "chunky-chicken.png",
+ "description": "For all the meat cravers, try the classic non-veg Burger Pizza loaded with the goodness of burger and the greatness of pizza.",
+ "price": "Rs. 300",
+ "size": "small"
+ }
+ ]
