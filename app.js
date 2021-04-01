@@ -5,11 +5,11 @@ const ejs = require('ejs');
 const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
 const flash = require('express-flash');
-const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const PORT = process.env.port || 4000;
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 
 const app = express();
 
@@ -60,7 +60,7 @@ app.use((req, res, next) => {
 
 // view engine setup
 app.use(expressLayouts);
-app.set('views', 'views');
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 require('./routes/web')(app);

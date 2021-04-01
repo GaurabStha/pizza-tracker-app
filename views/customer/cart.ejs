@@ -27,18 +27,22 @@
                     <span class="amount text-2xl font-bold ml-2">Rs.  <%= session.cart.totalPrice %></span>
                 </div>
                 <div>
-                    <form action="/cart" method="POST" class="mt-12">
-                        <input type="text" class="border border-gray-400 p-2 w-1/2 mb-4" placeholder="Phone number">
-                        <input type="text" class="border border-gray-400 p-2 w-1/2" placeholder="Address">
-                        <div>
-                            <% if(user){ %>
-                                <button type="submit" class="btn-primary py-2 px-6 rounded-full text-white font-bold mt-6">Order Now</button>
-                                <% } else { %>
-                        </div>
+                    <form action="/orders" method="POST" class="mt-12">
+                        <input name="phone" type="text" class="border border-gray-400 p-2 w-1/2 mb-4" placeholder="Phone number">
+                        <input name="address" type="text" class="border border-gray-400 p-2 w-1/2" placeholder="Address">
+                        <br>
+                        <% if(messages.error) { %>
+                            <span class="text-red-500 font-bold text-sm "><%= messages.error%> </span>
+                            <% } %>
+                                <% if(user){ %>
+                                    <div>
+                                        <button type="submit" class="btn-primary py-2 px-6 rounded-full text-white font-bold mt-6">Order Now</button>
+                                    </div>
                     </form>
                 </div>
-                <a href="/login" class="inline-block cursor-pointer btn-primary px-6 py-2 rounded-full text-white font-bold mt-6">Login to continue</a>
-                <% } %>
+                <% } else { %>
+                    <a href="/login" class="inline-block cursor-pointer btn-primary px-6 py-2 rounded-full text-white font-bold mt-6">Login to continue</a>
+                    <% } %>
             </div>
         </div>
         <% } else { %>

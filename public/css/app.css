@@ -299,7 +299,8 @@ nav li a:hover {
   color: #FE5F1E;
 }
 
-section.hero {
+section.hero,
+section.orders {
   background: #F8F8F8;
 }
 
@@ -350,4 +351,8 @@ section.login a:hover {
 .noty_theme__mint {
   border-radius: 50px !important;
   padding-left: 8px !important;
+}
+
+a.link {
+  color: #FE5F1E;
 }
