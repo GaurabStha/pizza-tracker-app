@@ -1834,6 +1834,24 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./app/http/middleware/admin.js":
+/*!**************************************!*\
+  !*** ./app/http/middleware/admin.js ***!
+  \**************************************/
+/***/ ((module) => {
+
+function admin(req, res, next) {
+  if (req.isAuthenticated() && req.user.role === 'admin') {
+    return next();
+  }
+
+  return res.redirect('/');
+}
+
+module.exports = admin;
+
+/***/ }),
+
 /***/ "./resources/js/admin.js":
 /*!*******************************!*\
   !*** ./resources/js/admin.js ***!
@@ -1849,9 +1867,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_2__);
 
 
-function initAdmin() {
+
+function initAdmin(socket) {
   var orderTableBody = document.querySelector('#orderTableBody');
   var orders = [];
   var markup;
@@ -1879,6 +1900,18 @@ function initAdmin() {
       return "\n                <tr>\n                    <td class=\"border px-4 py-2 text-green-900\">\n                        <p>".concat(order._id, "</p>\n                        <div>").concat(renderItems(order.items), "</div>\n                    </td>\n                    <td class=\"border px-4 py-2\">").concat(order.customerId.name, "</td>\n                    <td class=\"border px-4 py-2\">").concat(order.phone, "</td>\n                    <td class=\"border px-4 py-2\">").concat(order.address, "</td>\n                    <td class=\"border px-4 py-2\">\n                        <div class=\"inline-block relative w-64\">\n                            <form action=\"/admin/order/status\" method=\"POST\">\n                                <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\">\n                                <select name=\"status\" onchange=\"this.form.submit()\" class=\"block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline\">\n                                    <option value=\"order_placed\"\n                                    ").concat(order.status === 'order_placed' ? 'selected' : '', ">\n                                        Placed\n                                    </option>\n                                    <option value=\"confirmed\"\n                                    ").concat(order.status === 'confirmed' ? 'selected' : '', ">\n                                        Confirmed\n                                    </option>\n                                    <option value=\"prepared\"\n                                    ").concat(order.status === 'prepared' ? 'selected' : '', ">\n                                        Prepared\n                                    </option>\n                                    <option value=\"delivered\"\n                                    ").concat(order.status === 'delivered' ? 'selected' : '', ">\n                                        Delivered\n                                    </option>\n                                    <option value=\"completed\"\n                                    ").concat(order.status === 'completed' ? 'selected' : '', ">\n                                        Completed\n                                    </option>\n                                </select>\n                            </form>\n                            <div class=\"pointer events-none absolute inset-y-0 right-0 fex items-center px-2 text-gray-700\">\n\n                            </div>\n                        </div>\n                    </td>\n                    <td class=\"border px-4 py-2\">").concat(moment__WEBPACK_IMPORTED_MODULE_1___default()(order.createdAt).format('hh:mm A'), "</td>\n                </tr>\n            ");
     }).join('');
   }
+
+  socket.on('orderPlaced', function (order) {
+    new (noty__WEBPACK_IMPORTED_MODULE_2___default())({
+      type: 'success',
+      timeout: 1000,
+      text: 'New order.',
+      progressBar: false
+    }).show();
+    orders.unshift(order);
+    orderTableBody.innerHTML = '';
+    orderTableBody.innerHTML = generateMarkUp(orders);
+  });
 }
 
 /***/ }),
@@ -1893,9 +1926,21 @@ function initAdmin() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
-/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _admin_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin.js */ "./resources/js/admin.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _app_http_middleware_admin_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../app/http/middleware/admin.js */ "./app/http/middleware/admin.js");
+/* harmony import */ var _app_http_middleware_admin_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_app_http_middleware_admin_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _admin_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./admin.js */ "./resources/js/admin.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
 
 
  // const { initAdmin } = require('./admin')
@@ -1907,16 +1952,18 @@ function updateCart(pizza) {
   axios__WEBPACK_IMPORTED_MODULE_0___default().post('/update-cart', pizza).then(function (res) {
     console.log(res);
     cartCounter.innerText = res.data.totalQty;
-    new (noty__WEBPACK_IMPORTED_MODULE_1___default())({
+    new (noty__WEBPACK_IMPORTED_MODULE_2___default())({
       type: 'success',
       timeout: 1000,
-      text: 'Items added to the cart.'
+      text: 'Items added to the cart.',
+      progressBar: false
     }).show();
   })["catch"](function (err) {
-    new (noty__WEBPACK_IMPORTED_MODULE_1___default())({
+    new (noty__WEBPACK_IMPORTED_MODULE_2___default())({
       type: 'error',
       timeout: 1000,
-      text: 'Something went wrong.'
+      text: 'Something went wrong.',
+      progressBar: false
     }).show();
   });
 }
@@ -1935,9 +1982,70 @@ if (alertMsg) {
   setTimeout(function () {
     alertMsg.remove();
   }, 2000);
+} // Change order status
+
+
+var statuses = document.querySelectorAll('.status_line');
+var hiddenInput = document.querySelector('#hiddenInput');
+var order = hiddenInput ? hiddenInput.value : null;
+order = JSON.parse(order);
+var time = document.createElement('small');
+
+function updateStatus(order) {
+  statuses.forEach(function (status) {
+    status.classList.remove('step-completed');
+    status.classList.remove('current');
+  });
+  var stepCompleted = true;
+  statuses.forEach(function (status) {
+    var dataProp = status.dataset.status;
+
+    if (stepCompleted) {
+      status.classList.add('step-completed');
+    }
+
+    if (dataProp === order.status) {
+      stepCompleted = false;
+      time.innerText = moment__WEBPACK_IMPORTED_MODULE_1___default()(order.updateAt).format('hh:mm A');
+      status.appendChild(time);
+
+      if (status.nextElementSibling) {
+        status.nextElementSibling.classList.add('current');
+      }
+    }
+  });
 }
 
-(0,_admin_js__WEBPACK_IMPORTED_MODULE_2__.initAdmin)();
+updateStatus(order); // Socket
+
+var socket = io();
+(0,_admin_js__WEBPACK_IMPORTED_MODULE_4__.initAdmin)(socket); // Join 
+
+if (order) {
+  socket.emit('join', "order_".concat(order._id));
+}
+
+;
+var adminAreaPath = window.location.pathname;
+console.log(adminAreaPath);
+
+if (adminAreaPath.includes('admin')) {
+  socket.emit('join', 'adminRoom');
+}
+
+socket.on('orderUpdated', function (data) {
+  var updatedOrder = _objectSpread({}, order);
+
+  updatedOrder.updateAt = moment__WEBPACK_IMPORTED_MODULE_1___default()().format();
+  updatedOrder.status = data.status;
+  updateStatus(updatedOrder);
+  new (noty__WEBPACK_IMPORTED_MODULE_2___default())({
+    type: 'success',
+    timeout: 1000,
+    text: 'Order updated.',
+    progressBar: false
+  }).show();
+});
 
 /***/ }),
 

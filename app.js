@@ -10,6 +10,7 @@ const passport = require('passport');
 const PORT = process.env.port || 4000;
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
+const Emitter = require('events');
 
 const app = express();
 
@@ -28,6 +29,10 @@ let mongoStore = new MongoStore({
     mongooseConnection: connection,
     collection: 'sessions'
 });
+
+// Event emitter
+const eventEmitter = new Emitter();
+app.set('eventEmitter', eventEmitter)
 
 // Session config
 app.use(session({
@@ -65,6 +70,24 @@ app.set('view engine', 'ejs');
 
 require('./routes/web')(app);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`The server is running at ${PORT}.`);
 });
+
+const io = require('socket.io')(server);
+io.on('connection', (socket) => {
+    // Join
+    console.log(socket.id)
+    socket.on('join', (roomName) => {
+        console.log(roomName);
+        socket.join(roomName);
+    })
+});
+
+eventEmitter.on('orderUpdated', (data) => {
+    io.to(`order_${data.id}`).emit('orderUpdated', data)
+})
+
+eventEmitter.on('orderPlaced', (data) => {
+    io.to('adminRoom').emit('orderPlaced', data)
+})
