@@ -21,7 +21,10 @@ nav li a {
     }
 }
 
-section.hero,
+section.hero {
+    background: $secondary;
+}
+
 section.orders,
 section.status {
     background: $secondary;
@@ -184,4 +187,15 @@ section.status {
     float: right;
     font-size: 14px;
     margin-top: 8px;
+}
+
+@media screen and(max-width: 1060px) {
+    .container {
+        max-width: 90%;
+    }
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 }

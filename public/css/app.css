@@ -296,7 +296,10 @@ nav li a:hover {
   color: #FE5F1E;
 }
 
-section.hero,
+section.hero {
+  background: #F8F8F8;
+}
+
 section.orders,
 section.status {
   background: #F8F8F8;
@@ -452,4 +455,16 @@ section.status {
   float: right;
   font-size: 14px;
   margin-top: 8px;
+}
+
+@media screen and (max-width: 1060px) {
+  .container {
+    max-width: 90%;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }

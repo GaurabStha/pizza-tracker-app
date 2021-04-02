@@ -16,12 +16,11 @@
 <body>
     <nav class="container mx-auto flex item-center justify-between py-4">
         <div>
-            <a href="/"><img src="/img/logo.png" alt="logo"></a>
+            <a href="/"><img src="/img/logo.png" class="w-full" alt="logo"></a>
         </div>
         <div>
-            <ul class="flex items-center">
+            <ul class="flex items-center text-xs md:text-sm lg:text-lg">
                 <li class="ml-6"><a href="/">Menu</a></li>
-                <li class="ml-6"><a href="#">Offers</a></li>
                 <% if(user) { %>
                     <% if(user.role === 'admin') { %>
                         <li class="ml-6"><a href="/admin/orders"> Admin Orders</a></li>
