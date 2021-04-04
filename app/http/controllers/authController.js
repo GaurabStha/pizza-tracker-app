@@ -6,7 +6,7 @@ require('../../config/passport');
 
 function authController() {
     const _getRedirectUrl = (req) => {
-        return req.user.role === 'admin' ? '/admin/orders' : '/customer/orders'
+        return req.user.role === 'admin' ? '/admin/adminHome' : '/customer/orders'
     }
 
     return {
@@ -70,7 +70,7 @@ function authController() {
             const user = new User({
                 name: name,
                 email: email,
-                password: hashPassword,
+                password: hashPassword
             });
 
             user.save()

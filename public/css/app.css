@@ -301,7 +301,8 @@ section.hero {
 }
 
 section.orders,
-section.status {
+section.status,
+section.admin-container {
   background: #F8F8F8;
   min-height: calc(100vh - 85px);
 }
@@ -467,4 +468,47 @@ section.status {
     overflow-x: auto;
     white-space: nowrap;
   }
+}
+.admin {
+  color: #FE5F1E;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 125px;
+  padding: 25px;
+  border-radius: 15px;
+  background: #ffffff;
+}
+
+.card_inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card_inner > span {
+  font-size: 25px;
+}
+
+.card-1 {
+  background: #d1ecf1;
+  color: #1f94ac;
+}
+
+.card-2 {
+  background: #d2f9ee;
+  color: #03bd88;
+}
+
+.card-3 {
+  background: #d6d8d9;
+  color: #242c31;
+}
+
+.card-4 {
+  background: #fddcdf;
+  color: #e93149;
 }

@@ -10,7 +10,6 @@ function adminOrderController() {
                     } else {
                         return res.render('admin/orders');
                     }
-
                 })
         }
     }

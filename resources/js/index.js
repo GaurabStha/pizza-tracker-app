@@ -1,9 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import Noty from 'noty';
-import admin from '../../app/http/middleware/admin.js';
 import { initAdmin } from './admin.js';
-// const { initAdmin } = require('./admin')
 
 let addToCart = document.querySelectorAll('.add-to-cart');
 let cartCounter = document.querySelector('#cartCounter');
@@ -11,7 +9,6 @@ let cartCounter = document.querySelector('#cartCounter');
 function updateCart(pizza) {
     axios.post('/update-cart', pizza)
         .then(res => {
-            console.log(res)
             cartCounter.innerText = res.data.totalQty;
             new Noty({
                 type: 'success',
@@ -42,6 +39,13 @@ if (alertMsg) {
     setTimeout(() => {
         alertMsg.remove();
     }, 2000);
+}
+
+const errAlertMsg = document.querySelector('#error-alert');
+if (errAlertMsg) {
+    setTimeout(() => {
+        errAlertMsg.remove();
+    }, 3000);
 }
 
 // Change order status

@@ -1,0 +1,55 @@
+<section class="orders light-section">
+    <div class="container mx-auto pt-12">
+        <div class="flex mb-8">
+            <button class="btn-primary text-white text-xl font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"><a href="/admin/addproducts/"><span class="text-xl">+</span> Add Product</a></button>
+            <h1 class="font-bold text-3xl py-2 px-4 underline">All Products</h1>
+        </div>
+        <% if(messages.success){ %>
+            <div id="success-alert" class="flex items-center bg-green-500 text-white text-lg font-bold px-4 py-3 rounded-full" role="alert">
+                <p>
+                    <%= messages.success %>
+                </p>
+            </div>
+            <% } %>
+                <% if(messages.error){ %>
+                    <div id="error-alert" class="flex items-center bg-red-500 text-white text-lg font-bold px-4 py-3 rounded-full" role="alert">
+                        <p>
+                            <%= messages.error %>
+                        </p>
+                    </div>
+                    <% } %>
+                        <table class="w-full table-auto bg-white">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 text-left">Name of Items</th>
+                                    <th class="px-4 py-2 text-left">Price</th>
+                                    <th class="px-4 py-2 text-left">Size</th>
+                                    <th class="px-4 py-2 text-left">Added At</th>
+                                    <th class="px-4 py-2 text-left">Edit/Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% pizzas.forEach(function(pizza) { %>
+                                    <tr>
+                                        <td class="border px-4 py-2">
+                                            <%= pizza.name %>
+                                        </td>
+                                        <td class="border px-4 py-2">Rs.
+                                            <%= pizza.price %>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <%= pizza.size %>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <%= moment(pizza.createdAt) %>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <button class="btn-primary text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"><a href="/admin/editproduct/<%= pizza._id %>">Edit<i class="las la-edit text-xl pl-2 font-bold"></i></a></button>
+                                            <button class="delete-item btn-primary text-white font-bold py-2 px-3 rounded-full focus:outline-none focus:shadow-outline"><a href="/admin/deleteproduct/<%= pizza._id %>" onclick="confirm('Are you sure to delete this item ?')">Delete<i class="las la-trash text-xl pl-2 font-bold"></i></a></button>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+    </div>
+</section>

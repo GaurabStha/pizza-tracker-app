@@ -1834,24 +1834,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./app/http/middleware/admin.js":
-/*!**************************************!*\
-  !*** ./app/http/middleware/admin.js ***!
-  \**************************************/
-/***/ ((module) => {
-
-function admin(req, res, next) {
-  if (req.isAuthenticated() && req.user.role === 'admin') {
-    return next();
-  }
-
-  return res.redirect('/');
-}
-
-module.exports = admin;
-
-/***/ }),
-
 /***/ "./resources/js/admin.js":
 /*!*******************************!*\
   !*** ./resources/js/admin.js ***!
@@ -1930,9 +1912,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
 /* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _app_http_middleware_admin_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../app/http/middleware/admin.js */ "./app/http/middleware/admin.js");
-/* harmony import */ var _app_http_middleware_admin_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_app_http_middleware_admin_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _admin_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./admin.js */ "./resources/js/admin.js");
+/* harmony import */ var _admin_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./admin.js */ "./resources/js/admin.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -1943,14 +1923,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
- // const { initAdmin } = require('./admin')
-
 var addToCart = document.querySelectorAll('.add-to-cart');
 var cartCounter = document.querySelector('#cartCounter');
 
 function updateCart(pizza) {
   axios__WEBPACK_IMPORTED_MODULE_0___default().post('/update-cart', pizza).then(function (res) {
-    console.log(res);
     cartCounter.innerText = res.data.totalQty;
     new (noty__WEBPACK_IMPORTED_MODULE_2___default())({
       type: 'success',
@@ -1982,6 +1959,50 @@ if (alertMsg) {
   setTimeout(function () {
     alertMsg.remove();
   }, 2000);
+}
+
+var errAlertMsg = document.querySelector('#error-alert');
+
+if (errAlertMsg) {
+  setTimeout(function () {
+    errAlertMsg.remove();
+  }, 3000);
+} // Deleting the product
+// $(document).ready(function() {
+//     $('.delete-item').on('click', function(e) {
+//         $target = $(e.target);
+//         let id = $(this).attr('data-id');
+//         $.ajax({
+//             method: 'DELETE',
+//             url: '/admin/deleteproduct/' + id,
+//             success: function(res) {
+//                 alert('Deleting item.');
+//                 window.location.href('/admin/product')
+//             },
+//             error: function(err) {
+//                 console.log(err);
+//             }
+//         })
+//     })
+// })
+
+
+if (window.location.pathname == "/admin/deleteproduct") {
+  $ondelete = $(".delete-item");
+  $ondelete.click(function () {
+    var id = $(this).attr("data-id");
+    var request = {
+      "url": "http://localhost:4000/admin/deleteproduct/".concat(id),
+      "method": "DELETE"
+    };
+
+    if (confirm("Do you really want to delete this record?")) {
+      $.ajax(request).done(function (response) {
+        alert("Data Deleted Successfully!");
+        location.reload();
+      });
+    }
+  });
 } // Change order status
 
 
@@ -2028,7 +2049,7 @@ if (order) {
 var adminAreaPath = window.location.pathname;
 
 if (adminAreaPath.includes('admin')) {
-  (0,_admin_js__WEBPACK_IMPORTED_MODULE_4__.initAdmin)(socket);
+  (0,_admin_js__WEBPACK_IMPORTED_MODULE_3__.initAdmin)(socket);
   socket.emit('join', 'adminRoom');
 }
 
